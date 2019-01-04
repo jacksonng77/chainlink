@@ -39,19 +39,13 @@ web3.providers.HttpProvider.prototype.sendAsync =
   web3.providers.HttpProvider.prototype.send
 export const eth = web3.eth;
 
-const INVALIDVALUE = {
-  // If you got this value, you probably tried to use one of the variables below
-  // before they were initialized. Do any test initialization which requires
-  // them in a callback passed to Mocha's `before` or `beforeEach`.
-  // https://mochajs.org/#asynchronous-hooks
-  unitializedValueProbablyShouldUseVaribleInMochaBeforeCallback: null
-}
-export let [accounts, defaultAccount, oracleNode, stranger, consumer] =
-  Array(1000).fill(INVALIDVALUE)
+export let accounts, defaultAccount, stranger, consumer,
+  oracleNode, oracleNode1, oracleNode2, oracleNode3
 before(async function queryEthClientForConstants () {
   accounts = (await eth.getAccounts());
-  [defaultAccount, oracleNode, stranger, consumer] = accounts.slice(0, 4)
-  })
+  [defaultAccount, stranger, consumer, oracleNode1, oracleNode2, oracleNode3] = accounts.slice(0, 6)
+  oracleNode = oracleNode1
+})
 
 export const utils = Utils(web3.currentProvider)
 export const wallet = Wallet(PRIVATE_KEY, utils)
@@ -62,7 +56,7 @@ const bNToStringOrIdentity = a => BN.isBN(a) ? a.toString() : a
 // Deal with transfer amount type truffle doesn't currently handle. (BN)
 export const wrappedERC20 = contract => ({
   ...contract,
-  transfer: async (address, amount) => 
+  transfer: async (address, amount) =>
     await contract.transfer(address, bNToStringOrIdentity(amount)),
   transferAndCall: async (address, amount, payload, options) =>
     await contract.transferAndCall(
@@ -109,7 +103,7 @@ export const isByteRepresentation = h => {
 export const deploy = async (filePath, ...args) =>
   await deployer.perform(filePath, ...args)
 
-export const getEvents = contract => 
+export const getEvents = contract =>
   new Promise((resolve, reject) => contract.allEvents()
               .get((error, events) => (error ? reject(error) : resolve(events))))
 
