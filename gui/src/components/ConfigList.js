@@ -1,12 +1,16 @@
 import React, { Fragment } from 'react'
 import PropTypes from 'prop-types'
-import Card from '@material-ui/core/Card'
 import Table from '@material-ui/core/Table'
 import TableBody from '@material-ui/core/TableBody'
 import TableCell from '@material-ui/core/TableCell'
 import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import Typography from '@material-ui/core/Typography'
+// TODO:
+// - don't title case config ENV vars
+// - Add toggle header prop. No header for transaction show, DO want header for config
+// - If we have time try to make the value column closer to the key column on large screens
+import { titleCase } from 'change-case'
 
 const renderFetching = () => (
   <TableRow>
@@ -28,7 +32,7 @@ const renderConfigs = configs => (
       <TableCell>
         <Typography variant='body1'>
           <Fragment>
-            {k}
+            {titleCase(k)}
           </Fragment>
         </Typography>
       </TableCell>
@@ -53,9 +57,9 @@ const renderBody = (configs, error) => {
   }
 }
 
-const ConfigList = ({configs, error}) => (
-  <Card>
-    <Table>
+const ConfigList = ({showHead, configs, error}) => (
+  <Table>
+    {showHead &&
       <TableHead>
         <TableRow>
           <TableCell>
@@ -66,16 +70,21 @@ const ConfigList = ({configs, error}) => (
           </TableCell>
         </TableRow>
       </TableHead>
-      <TableBody>
-        {renderBody(configs, error)}
-      </TableBody>
-    </Table>
-  </Card>
+    }
+    <TableBody>
+      {renderBody(configs, error)}
+    </TableBody>
+  </Table>
 )
 
 ConfigList.propTypes = {
   configs: PropTypes.array.isRequired,
-  error: PropTypes.string
+  error: PropTypes.string,
+  showHead: PropTypes.bool
+}
+
+ConfigList.defaultProps = {
+  showHead: false
 }
 
 export default ConfigList

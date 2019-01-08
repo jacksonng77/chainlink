@@ -31,6 +31,7 @@ const JobRunsIndex = universal(import('./containers/JobRuns/Index'), uniOpts)
 const JobRunsShow = universal(import('./containers/JobRuns/Show'), uniOpts)
 const JobRunsShowJson = universal(import('./containers/JobRuns/ShowJson'), uniOpts)
 const TransactionsIndex = universal(import('./containers/Transactions/Index'), uniOpts)
+const TransactionsShow = universal(import('./containers/Transactions/Show'), uniOpts)
 const Configuration = universal(import('./containers/Configuration'), uniOpts)
 const SignIn = universal(import('./containers/SignIn'), uniOpts)
 const SignOut = universal(import('./containers/SignOut'), uniOpts)
@@ -103,6 +104,7 @@ const Layout = useHooks(props => {
               <PrivateRoute exact path='/bridges/:bridgeId' component={BridgesShow} />
               <PrivateRoute exact path='/bridges/:bridgeId/edit' component={BridgesEdit} />
               <PrivateRoute exact path='/transactions' component={TransactionsIndex} />
+              <PrivateRoute exact path='/transactions/:hash' component={TransactionsShow} />
               <PrivateRoute exact path='/config' component={Configuration} />
               <Routes />
             </Switch>
